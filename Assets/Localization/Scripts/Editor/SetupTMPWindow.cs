@@ -1,65 +1,73 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.UIElements;
+
 
 public class SetupTMPWindow : EditorWindow
 {
-    [MenuItem("Window/Localization/Setup TMP")]
-    public static void ShowWindow()
+    private static SerializedObject _serializedObject;
+    private static TMPSettings _settings => TMPSettings.Instance;
+
+    [MenuItem("Window/SetupTMPWindow")]
+    public static void ShowExample()
     {
-        SetupTMPWindow wnd = GetWindow<SetupTMPWindow>();
-        wnd.titleContent = new GUIContent("Setup TMP");
+        GetWindow<SetupTMPWindow>();
     }
 
-    [SerializeField] private TMP_FontAsset _mainFont;
-    [SerializeField] private List<TMP_FontAsset> _fonts;
+    private float _lineHeight;
+    private List<TMP_FontAsset> fonts = new();
 
-    public void CreateGUI()
+    public void OnGUI()
     {
-        // Each editor window contains a root VisualElement object
-        VisualElement root = rootVisualElement;
+        DisplayHelp();
 
-        // VisualElements objects can contain other VisualElements following a tree hierarchy.
-        Label label = new Label("These controls were created using C# code.");
-        root.Add(label);
+        EditorGUILayout.ObjectField("Main font", _settings.MainFont, typeof(TMP_FontAsset), false);
+        DisplayTMP_Font();
+        var buttonStyle = new GUIStyle(GUI.skin.button) { fontStyle = FontStyle.Bold, fixedHeight = 30 };
+        if (GUILayout.Button("Setup TMP", buttonStyle))
+        {
+
+        }
+
+        if (GUILayout.Button("Open Tutorial Localization", buttonStyle))
+        {
+
+        }
+
+        if (GUILayout.Button("Reset", buttonStyle))
+        {
+
+        }
     }
 
-    void Setup()
+    private static void DisplayTMP_Font()
     {
-        // Fix Line Height
-        foreach (var fontAsset in _fonts)
+        if (_serializedObject == null || _serializedObject.targetObject == null)
         {
-            if (fontAsset != null)
-            {
-                float fontLineHeight = fontAsset.faceInfo.lineHeight;
-
-                float scaleFactor = _mainFont.faceInfo.lineHeight / fontLineHeight;
-
-                var faceInfo = fontAsset.faceInfo;
-                faceInfo.scale = scaleFactor;
-                fontAsset.faceInfo = faceInfo;
-
-                EditorUtility.SetDirty(fontAsset);
-                Debug.Log($"Normalized font: {fontAsset.name}, Scale factor: {scaleFactor}");
-            }
+            _serializedObject = new SerializedObject(_settings);
+        }
+        else
+        {
+            _serializedObject.Update();
         }
 
-        // Change to Dynamic to auto
-        _mainFont.atlasPopulationMode = AtlasPopulationMode.Dynamic;
+        var property = _serializedObject.FindProperty("FallbackFonts");
+        EditorGUILayout.PropertyField(property, new GUIContent("Fallback fonts"), true);
 
-        // To automatically create atlas at runtime
-        _mainFont.isMultiAtlasTexturesEnabled = true;
-
-        // Update fallback fonts
-        foreach (var font in _fonts)
+        if (property.isArray)
         {
-            if (font != _mainFont && !_mainFont.fallbackFontAssetTable.Contains(font))
-            {
-                _mainFont.fallbackFontAssetTable.Add(font);
-                Debug.Log($"Add {font.name} to fallback fonts!");
-            }
+
         }
+        _serializedObject.ApplyModifiedProperties();
+    }
+
+    private static void DisplayHelp()
+    {
+        EditorGUILayout.HelpBox("" +
+            "- Main font là font chính được sử dụng cho TextmeshProUGUI\n" +
+            "- Fallback fonts là các font phụ hỗ trợ các ký tự còn thiếu cho MainFont\n" +
+            "* Setup này sẽ tự động điều chỉnh scale của fallback fonts để cùng chiều cao với Main font, đặt Fallback fonts vào Main font và tự động thay đổi settings của Main font để phù hợp với đa ngôn ngữ",
+            MessageType.None);
     }
 }
