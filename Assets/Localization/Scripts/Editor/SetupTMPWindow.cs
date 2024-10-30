@@ -27,17 +27,17 @@ public class SetupTMPWindow : EditorWindow
         var buttonStyle = new GUIStyle(GUI.skin.button) { fontStyle = FontStyle.Bold, fixedHeight = 30 };
         if (GUILayout.Button("Setup TMP", buttonStyle))
         {
-
+            SetupTMP();
         }
 
         if (GUILayout.Button("Open Tutorial Localization", buttonStyle))
         {
-
+            OpenTutorial();
         }
 
         if (GUILayout.Button("Reset", buttonStyle))
         {
-
+            ResetSettings();
         }
     }
 
@@ -55,10 +55,14 @@ public class SetupTMPWindow : EditorWindow
         var property = _serializedObject.FindProperty("FallbackFonts");
         EditorGUILayout.PropertyField(property, new GUIContent("Fallback fonts"), true);
 
-        if (property.isArray)
+        /*if (property.isArray)
         {
+            property.Next(true);
 
-        }
+            var length = property.intValue;
+
+            _settings.FallbackFonts.Clear();
+        }*/
         _serializedObject.ApplyModifiedProperties();
     }
 
@@ -69,5 +73,20 @@ public class SetupTMPWindow : EditorWindow
             "- Fallback fonts là các font phụ hỗ trợ các ký tự còn thiếu cho MainFont\n" +
             "* Setup này sẽ tự động điều chỉnh scale của fallback fonts để cùng chiều cao với Main font, đặt Fallback fonts vào Main font và tự động thay đổi settings của Main font để phù hợp với đa ngôn ngữ",
             MessageType.None);
+    }
+
+    void SetupTMP()
+    {
+        Debug.Log("SetupTMP");
+    }
+
+    void OpenTutorial()
+    {
+        Debug.Log("OpenTutorial");
+    }
+
+    private void ResetSettings()
+    {
+        Debug.Log("ResetSettings");
     }
 }
