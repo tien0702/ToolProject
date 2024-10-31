@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 878094c4837049b4abb1223de8fe63cc, type: 3}
   m_Name: Localization
   m_EditorClassIdentifier: 
-  MainFont: {fileID: 0}
+  MainFont: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   FallbackFonts:
   - {fileID: 11400000, guid: 040573e375df026498cd41a00c13648c, type: 2}
   - {fileID: 11400000, guid: 92bcff8e85109e34a8e522a3b32b27c3, type: 2}
   - {fileID: 11400000, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
+  - {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

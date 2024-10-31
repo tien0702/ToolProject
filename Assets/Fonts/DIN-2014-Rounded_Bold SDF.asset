@@ -59,9 +59,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
   m_Name: DIN-2014-Rounded_Bold SDF
   m_EditorClassIdentifier: 
-  hashCode: 0
+  hashCode: -1299540692
   material: {fileID: 3295741278149769374}
-  materialHashCode: 0
+  materialHashCode: -1679702388
   m_Version: 1.1.0
   m_SourceFontFileGUID: 4f066cc8f0af81f46b0d2a96b0797eff
   m_SourceFontFile_EditorRef: {fileID: 12800000, guid: 4f066cc8f0af81f46b0d2a96b0797eff, type: 3}
@@ -72,7 +72,7 @@ MonoBehaviour:
     m_FamilyName: DIN 2014 Rounded
     m_StyleName: Bold
     m_PointSize: 90
-    m_Scale: 1
+    m_Scale: 0.86112505
     m_LineHeight: 114.840004
     m_AscentLine: 85.770004
     m_CapLine: 63

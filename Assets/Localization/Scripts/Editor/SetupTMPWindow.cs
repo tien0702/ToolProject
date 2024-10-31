@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using TMPro;
+﻿using TMPro;
 using UnityEditor;
 using UnityEngine;
 
@@ -15,14 +14,11 @@ public class SetupTMPWindow : EditorWindow
         GetWindow<SetupTMPWindow>();
     }
 
-    private float _lineHeight;
-    private List<TMP_FontAsset> fonts = new();
-
     public void OnGUI()
     {
         DisplayHelp();
 
-        EditorGUILayout.ObjectField("Main font", _settings.MainFont, typeof(TMP_FontAsset), false);
+        _settings.MainFont = EditorGUILayout.ObjectField("Main font", _settings.MainFont, typeof(TMP_FontAsset), false) as TMP_FontAsset;
         DisplayTMP_Font();
         var buttonStyle = new GUIStyle(GUI.skin.button) { fontStyle = FontStyle.Bold, fixedHeight = 30 };
         if (GUILayout.Button("Setup TMP", buttonStyle))
@@ -30,14 +26,9 @@ public class SetupTMPWindow : EditorWindow
             SetupTMP();
         }
 
-        if (GUILayout.Button("Open Tutorial Localization", buttonStyle))
+        if (GUILayout.Button("Open Localization Tutorial", buttonStyle))
         {
             OpenTutorial();
-        }
-
-        if (GUILayout.Button("Reset", buttonStyle))
-        {
-            ResetSettings();
         }
     }
 
@@ -77,12 +68,53 @@ public class SetupTMPWindow : EditorWindow
 
     void SetupTMP()
     {
-        Debug.Log("SetupTMP");
+        if (_settings.MainFont == null)
+        {
+            Debug.LogError("Main font is null!");
+            return;
+        }
+
+        // Change to Dynamic to auto
+        _settings.MainFont.atlasPopulationMode = AtlasPopulationMode.Dynamic;
+
+        // To automatically create atlas at runtime
+        _settings.MainFont.isMultiAtlasTexturesEnabled = true;
+        Debug.Log("Finished setting MainFont.");
+
+        // Update fallback fonts
+        _settings.MainFont.fallbackFontAssetTable.Clear();
+        foreach (var font in _settings.FallbackFonts)
+        {
+            if (!font.Equals(_settings.MainFont) && !_settings.MainFont.fallbackFontAssetTable.Contains(font))
+            {
+                _settings.MainFont.fallbackFontAssetTable.Add(font);
+                Debug.Log($"Add {font.name} to fallback fonts!");
+            }
+        }
+        Debug.Log("Finished adding Fontback font!");
+
+        foreach (var fontAsset in _settings.FallbackFonts)
+        {
+            if (fontAsset != null && !fontAsset.Equals(_settings.MainFont))
+            {
+                float fontLineHeight = fontAsset.faceInfo.lineHeight;
+
+                float scaleFactor = _settings.MainFont.faceInfo.lineHeight / fontLineHeight;
+
+                var faceInfo = fontAsset.faceInfo;
+                faceInfo.scale = scaleFactor;
+                fontAsset.faceInfo = faceInfo;
+
+                EditorUtility.SetDirty(fontAsset);
+                Debug.Log($"Normalized font: {fontAsset.name}, Scale factor: {scaleFactor}");
+            }
+        }
+        Debug.Log("Finished adding Fontback font to Main font!");
     }
 
     void OpenTutorial()
     {
-        Debug.Log("OpenTutorial");
+        Application.OpenURL("https://github.com/tien0702/NixLocalization/blob/main/README.md");
     }
 
     private void ResetSettings()

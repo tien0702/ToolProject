@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
   m_Name: Chinese SDF
   m_EditorClassIdentifier: 
-  hashCode: 0
+  hashCode: -2011853042
   material: {fileID: 1788952361454459776}
-  materialHashCode: 0
+  materialHashCode: 72582638
   m_Version: 1.1.0
   m_SourceFontFileGUID: 4739f681c683e104a9ad7bbb1da7f1f3
   m_SourceFontFile_EditorRef: {fileID: 12800000, guid: 4739f681c683e104a9ad7bbb1da7f1f3, type: 3}
@@ -25,7 +25,7 @@ MonoBehaviour:
     m_FamilyName: Tensentype JiaLiZhunCuYuanF
     m_StyleName: Bold
     m_PointSize: 90
-    m_Scale: 1
+    m_Scale: 0.915514
     m_LineHeight: 108.01758
     m_AscentLine: 88.19824
     m_CapLine: 62
